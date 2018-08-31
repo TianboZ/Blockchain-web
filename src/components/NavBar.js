@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
     render() {
@@ -9,14 +10,17 @@ class NavBar extends Component {
                     <Menu.Item key="1">
                         <Icon type="home" />
                         <span>Home</span>
+                        <Link to ='/home' />
                     </Menu.Item>
                     <Menu.Item key="2">
                         <Icon type="login" />
                         <span>Register Product</span>
+                        <Link to ='/register' />
                     </Menu.Item>
                     <Menu.Item key="3">
                         <Icon type="search" />
                         <span>Search</span>
+                        <Link to ='/search' />
                     </Menu.Item>
                 </Menu>
             </div>
