@@ -9,6 +9,7 @@ class Main extends React.Component {
         return (
             <div className="main">
                 <Switch>
+
                     <Route exact path="/" component={Home}/>
                     <Route path="/register" component={RegistrationForm}/>
                     <Route path="/search" component={QueryProduct}/>
