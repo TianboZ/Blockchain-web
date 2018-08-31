@@ -1,5 +1,6 @@
 @import './RegistrationForm.css';
 @import './Main.css';
+@import '~antd/dist/antd.css';
 
 .App {
     text-align: center;
@@ -12,8 +13,9 @@
 }
 
 .App-header {
-    background-color: #222;
+    background-color: #001525;
     height: 60px;
+    width: 100%;
     color: white;
 }
 

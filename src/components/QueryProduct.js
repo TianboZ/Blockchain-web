@@ -93,6 +93,7 @@ class QueryProduct extends Component {
                         <Icon type="down" />
                     </a>
                 </Dropdown>
+                <br/><br/>
                 <Button
                     type="primary"
                     icon="search"
