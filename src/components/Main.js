@@ -1,15 +1,22 @@
 import React from 'react';
 import RegistrationForm from "./RegistrationForm";
 import QueryProduct from "./QueryProduct";
+import { Switch, Route } from 'react-router-dom'
+import Home from "./Home";
 
-export class Main extends React.Component {
+class Main extends React.Component {
     render() {
         return (
-            <section
-                className="main"
-            >
-                <RegistrationForm />
-            </section>
+            <div className="main">
+                <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/register" component={RegistrationForm}/>
+                    <Route path="/search" component={QueryProduct}/>
+                    <Route component={Home}/>
+                </Switch>
+            </div>
         );
     }
 }
+
+export default Main;
