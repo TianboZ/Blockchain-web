@@ -22,6 +22,7 @@ class RegistrationForm extends Component {
 
     handleSubmit = (e) => {
         console.log(this.state);
+        alert(this.state);
         axios.post('/register', this.state)
             .then((response)=>{
                 console.log(response);
@@ -84,23 +85,30 @@ class RegistrationForm extends Component {
         const latitude = 'latitude';
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form
+                onSubmit={this.handleSubmit}
+                className="register-form"
+            >
                 <Dropdown
                     overlay={menu}
                     trigger={['click']}
+                    {...formItemLayout}
                 >
                     <a
-                        className="ant-dropdown-link" href="#">
+                        className="ant-dropdown-link"
+                    >
                         product type
                         <Icon type="down" />
                     </a>
                 </Dropdown>
+                <br/><br/>
                 <FormItem
                     label={(
                         <span>
                             description&nbsp;
                         </span>
                     )}
+                    {...formItemLayout}
                 >
                     <Input
                         value={this.state.description}
@@ -113,6 +121,7 @@ class RegistrationForm extends Component {
                             price&nbsp;
                         </span>
                     )}
+                    {...formItemLayout}
                 >
                     <Input
                         value={this.state.price}
@@ -125,6 +134,7 @@ class RegistrationForm extends Component {
                             longitude&nbsp;
                         </span>
                     )}
+                    {...formItemLayout}
                 >
                     <Input
                         value={this.state.longitude}
@@ -137,14 +147,22 @@ class RegistrationForm extends Component {
                             longitude&nbsp;
                         </span>
                     )}
+                    {...formItemLayout}
                 >
                     <Input
                         value={this.state.latitude}
                         onChange={this.handleInputChange.bind(this, latitude)}
                     />
                 </FormItem>
-                <FormItem>
-                    <Button type="primary" htmlType="submit">Register</Button>
+                <FormItem
+                    {...tailFormItemLayout}
+                >
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                    >
+                        Register
+                    </Button>
                 </FormItem>
             </Form>
         );

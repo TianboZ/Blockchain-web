@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import TodoList from "./TodoList";
 import WrappedRegistrationForm from "./RegistrationForm";
 import QueryProduct from "./QueryProduct";
+import Header from "./Header";
+import {Main} from "./Main";
 
 class App extends Component {
   render() {
     return (
       <div>
-            <WrappedRegistrationForm />
-            <QueryProduct />
+            <Header />
+            <Main />
       </div>
     );
   }
