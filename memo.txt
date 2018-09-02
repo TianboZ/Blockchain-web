@@ -1,0 +1,42 @@
+MyEtherWallet
+private key: 06a790416d6d6dbbe223766a3dd35882f904c99027614c5934fb8db885f8d94f
+account Address: 0x1c01EDb2896644Ef2C534f42C264260C2A909Cdc
+
+Metamask:
+address: 0x98972074a659bc5317a7A6626a7ccd3F4F3928e9
+
+----------------------------------------------
+contract address:
+0x7b897b4641bc94e95bd80e3e9f45969bc8a407ff
+
+ABI:
+[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "x",
+				"type": "string"
+			}
+		],
+		"name": "sendHash",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getHash",
+		"outputs": [
+			{
+				"name": "x",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
