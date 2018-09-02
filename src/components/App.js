@@ -3,6 +3,7 @@ import { Layout, Menu, Icon } from 'antd';
 import Header from "./Header";
 import Main from "./Main";
 import NavBar from "./NavBar";
+import DApp from "./DApp";
 
 const {Sider, Content} = Layout;
 

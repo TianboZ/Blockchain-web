@@ -19,7 +19,6 @@ class Header extends React.Component {
                         Project
                     </h1>
                 </header>
-                <DApp />
             </div>
 
         );

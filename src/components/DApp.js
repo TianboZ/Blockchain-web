@@ -18,41 +18,27 @@ class DApp extends Component {
         txReceipt: ''
     };
 
-    captureFile =(event) => {
-        event.stopPropagation()
-        event.preventDefault()
-        const file = event.target.files[0]
-        let reader = new window.FileReader()
-        reader.readAsArrayBuffer(file)
-        reader.onloadend = () => this.convertToBuffer(reader)
-    };
+    componentDidMount = ()=>{
+        this.convertToBuffer();
+        this.onSubmit();
+    }
 
-    convertToBuffer = async(reader) => {
+    convertToBuffer = async() => {
         //file is converted to a buffer for upload to IPFS
-        const buffer = await Buffer.from(reader.result);
+        const obj = {
+            a: 11111,
+            b: 'tom'
+        };
+        //const buffer = await Buffer.from(reader.result);
+        const buffer = await Buffer.from(JSON.stringify(obj));
         //set this buffer -using es6 syntax
+
         this.setState({buffer});
     };
 
-    onClick = async () => {
-        try{
-            this.setState({blockNumber:"waiting.."});
-            this.setState({gasUsed:"waiting..."});
-//get Transaction Receipt in console on click
-//See: https://web3js.readthedocs.io/en/1.0/web3-eth.html#gettransactionreceipt
-            await web3.eth.getTransactionReceipt(this.state.transactionHash, (err, txReceipt)=>{
-                console.log(err,txReceipt);
-                this.setState({txReceipt});
-            }); //await for getTransactionReceipt
-            await this.setState({blockNumber: this.state.txReceipt.blockNumber});
-            await this.setState({gasUsed: this.state.txReceipt.gasUsed});
-        } //try
-        catch(error){
-            console.log(error);
-        } //catch
-    } //onClick
-    onSubmit = async (event) => {
-        event.preventDefault();
+
+    onSubmit = async () => {
+        //event.preventDefault();
         //bring in user's metamask account address
         const accounts = await web3.eth.getAccounts();
 
@@ -82,58 +68,8 @@ class DApp extends Component {
 
         return (
             <div>
-                <header>
-                    <h1> Ethereum and IPFS with Create React App</h1>
-                </header>
-
-                <hr />
                 <Grid>
                     <h3> Choose file to send to IPFS </h3>
-                    <Form onSubmit={this.onSubmit}>
-                        <input
-                            type = "file"
-                            onChange = {this.captureFile}
-                        />
-                        <Button
-                            bsStyle="primary"
-                            type="submit">
-                            Send it
-                        </Button>
-                    </Form>
-                    <hr/>
-                    <Button onClick = {this.onClick}> Get Transaction Receipt </Button>
-                    <Table bordered responsive>
-                        <thead>
-                        <tr>
-                            <th>Tx Receipt Category</th>
-                            <th>Values</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr>
-                            <td>IPFS Hash # stored on Eth Contract</td>
-                            <td>{this.state.ipfsHash}</td>
-                        </tr>
-                        <tr>
-                            <td>Ethereum Contract Address</td>
-                            <td>{this.state.ethAddress}</td>
-                        </tr>
-                        <tr>
-                            <td>Tx Hash # </td>
-                            <td>{this.state.transactionHash}</td>
-                        </tr>
-                        <tr>
-                            <td>Block Number # </td>
-                            <td>{this.state.blockNumber}</td>
-                        </tr>
-                        <tr>
-                            <td>Gas Used</td>
-                            <td>{this.state.gasUsed}</td>
-                        </tr>
-
-                        </tbody>
-                    </Table>
                 </Grid>
             </div>
         );
