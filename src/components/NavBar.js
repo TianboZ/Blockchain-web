@@ -10,12 +10,14 @@ class NavBar extends Component {
                     <Menu.Item key="1">
                         <Icon type="home" />
                         <span>Home</span>
-                        <Link to ='/home' />
+                        <Link to ='/' />
                     </Menu.Item>
                     <Menu.Item key="2">
                         <Icon type="login" />
                         <span>Register Product</span>
-                        <Link to ='/register' />
+                        <Link to ='/register' >
+
+                        </Link>
                     </Menu.Item>
                     <Menu.Item key="3">
                         <Icon type="search" />

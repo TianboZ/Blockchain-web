@@ -3,7 +3,7 @@ import {Dropdown, Icon, Menu} from "antd";
 import { Button } from 'antd';
 import Item from "./Item";
 import axios from 'axios';
-
+import { API_ROOT } from "../constants";
 
 class QueryProduct extends Component {
 
@@ -22,17 +22,24 @@ class QueryProduct extends Component {
     }
 
     handleOnClick = ()=>{
-        axios.get('/api/blockchain')
-            .then((response)=>{
-                console.log(response.data);
-                this.setState({
-                    items: response.data
-                });
 
-            })
-            .catch((error)=>{
-                console.log(error);
+
+        const query = {
+            tag: 'SDPP'
+        }
+
+        //axios.get(`${API_ROOT}/search?tag=SDPP`)
+        axios.get(`${API_ROOT}/search`, {params: query})
+        .then((response)=>{
+            console.log(response.data);
+            this.setState({
+                items: response.data
             });
+
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
     }
 
     handleSelectItem = (index)=>{

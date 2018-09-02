@@ -9,9 +9,9 @@ class TodoList extends Component {
         input: '',
         list: ['todo1', 'todo2']
     }
-    componentDidMount() {
+    componentDidMount = ()=>{
         console.log('componentDidMount');
-        axios.get('/api/blockchain')
+        axios.get('/api/search')
             .then((res)=>{
                 console.log(res.data);
                 this.setState(() => ({

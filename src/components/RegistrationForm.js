@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Form, Input, Button} from 'antd';
 import { Menu, Dropdown, Icon } from 'antd';
 import axios from 'axios';
+import {API_ROOT} from "../constants";
 
 const menu = (
     <Menu>
@@ -20,12 +21,20 @@ class RegistrationForm extends Component {
         latitude:''
     };
 
-    handleSubmit = (e) => {
+    handleBtnClick = (e) => {
         console.log(this.state);
         alert(this.state);
-        axios.post('/register', this.state)
+        axios.post(`${API_ROOT}/register`, this.state)
             .then((response)=>{
                 console.log(response);
+                // if success, jump to home, clean state data
+                this.setState(()=>({
+                    description: '',
+                    price: '',
+                    longitude: '',
+                    latitude:''
+                }));
+                this.props.history.push('/home');
             }).catch((error)=>{
                 console.log(error);
             });
@@ -55,6 +64,7 @@ class RegistrationForm extends Component {
     }
 
     render() {
+        console.log('render registration');
 
         const formItemLayout = {
             labelCol: {
@@ -86,7 +96,7 @@ class RegistrationForm extends Component {
 
         return (
             <Form
-                onSubmit={this.handleSubmit}
+
                 className="register-form"
             >
                 <Dropdown
@@ -160,6 +170,7 @@ class RegistrationForm extends Component {
                     <Button
                         type="primary"
                         htmlType="submit"
+                        onClick={this.handleBtnClick}
                     >
                         Register
                     </Button>
