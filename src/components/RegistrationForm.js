@@ -35,8 +35,13 @@ class RegistrationForm extends Component {
     handleBtnClick = (e) => {
         this.sendToIpfs();
         console.log(this.state);
-        alert(this.state);
-        axios.post(`${API_ROOT}/register`, this.state.ipfsHash)
+        //alert(this.state);
+        const reqBody = {
+            ipfs_hash: this.state.ipfsHash,
+            protocol_type: 0x01
+        }
+
+        axios.post(`${API_ROOT}/register`, reqBody)
             .then((response)=>{
                 console.log(response);
                 // if success, jump to home, clean state data
