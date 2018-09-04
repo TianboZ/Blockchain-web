@@ -9,6 +9,9 @@ address: 0x98972074a659bc5317a7A6626a7ccd3F4F3928e9
 contract address:
 0x7b897b4641bc94e95bd80e3e9f45969bc8a407ff
 
+new one：
+0xa99dBd133D5Db1D1A799A7378b57Aec828153C40
+
 ABI:
 [
 	{
@@ -40,3 +43,6 @@ ABI:
 		"type": "function"
 	}
 ]
+
+new one:
+[{"constant":false,"inputs":[{"name":"_hash_start","type":"bytes32"},{"name":"_hash_end","type":"bytes32"},{"name":"_pytpe","type":"bytes1"}],"name":"postProduct","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_hash","type":"bytes32"},{"name":"_hashfunction","type":"uint8"},{"name":"_size","type":"uint8"}],"name":"addProduct","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"indexed_from","type":"address"},{"indexed":false,"name":"hash_start","type":"bytes32"},{"indexed":false,"name":"hash_end","type":"bytes32"},{"indexed":false,"name":"ptype","type":"bytes1"}],"name":"PostProducts","type":"event"}]

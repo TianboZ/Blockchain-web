@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import Item from "./Item";
 import axios from 'axios';
 import { API_ROOT } from "../constants";
+import web3 from "./web3";
 
 class QueryProduct extends Component {
 

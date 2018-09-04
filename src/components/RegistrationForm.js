@@ -32,6 +32,15 @@ class RegistrationForm extends Component {
         txReceipt: ''
     };
 
+    getHexfromIPFSHash =(ipfsHash) =>{
+        let hash = Buffer.from(ipfsHash).toString('hex');
+        return {
+            hash_start:`0x${hash.substring(0,64)}`,
+            hash_end: `0x${hash.slice(64)}`,
+            protocol_type: '0x01'
+        }
+    }
+
     handleBtnClick = (e) => {
         this.sendToIpfs();
         console.log(this.state);
@@ -82,9 +91,12 @@ class RegistrationForm extends Component {
     onSubmit = async () => {
         //event.preventDefault();
         //bring in user's metamask account address
-        const accounts = await web3.eth.getAccounts();
+        const account = web3.eth.accounts.privateKeyToAccount('0xC89ADA337DCDD9D9D092D582104064554DDC3A835B0D164B82E304F0DFC5F0FC');
+        web3.eth.accounts.wallet.add(account);
+        web3.eth.defaultAccount = account.address;
+        ;
 
-        console.log('Sending from Metamask account: ' + accounts[0]);
+        console.log('Sending from Metamask account: ' + account.address);
         //obtain contract address from storehash.js
         const ethAddress= await storehash.options.address;
         this.setState({ethAddress});
@@ -98,8 +110,11 @@ class RegistrationForm extends Component {
             //return the transaction hash from the ethereum contract
             //see, this https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#methods-mymethod-send
 
-            storehash.methods.sendHash(this.state.ipfsHash).send({
-                from: accounts[0]
+            let data = this.getHexfromIPFSHash(this.state.ipfsHash);
+            console.log(data);
+            storehash.methods.postProduct(data.hash_start , data.hash_end , data.protocol_type).send({
+                from: account.address,
+                gas : 1000000
             }, (error, transactionHash) => {
                 console.log(transactionHash);
                 this.setState({transactionHash});
