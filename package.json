@@ -6,6 +6,7 @@
     "antd": "^3.8.4",
     "axios": "^0.18.0",
     "fs-extra": "^7.0.0",
+    "hex2ascii": "0.0.3",
     "ipfs-api": "^24.0.1",
     "react": "^16.4.2",
     "react-bootstrap": "^0.32.3",

@@ -3,8 +3,10 @@ import {Dropdown, Icon, Menu} from "antd";
 import { Button } from 'antd';
 import Item from "./Item";
 import axios from 'axios';
-import { API_ROOT } from "../constants";
+import storehash from "./storehash";
+import ipfs from "./ipfs";
 import web3 from "./web3";
+import hex2ascii from 'hex2ascii';
 
 class QueryProduct extends Component {
 
@@ -23,24 +25,31 @@ class QueryProduct extends Component {
     }
 
     handleOnClick = ()=>{
+        let products = [];
+        const account = web3.eth.accounts.privateKeyToAccount('0xC89ADA337DCDD9D9D092D582104064554DDC3A835B0D164B82E304F0DFC5F0FC');
+        web3.eth.accounts.wallet.add(account);
+        web3.eth.defaultAccount = account.address;
+        storehash.getPastEvents("PostProducts", { fromBlock: 0, toBlock: 'latest' }).then(
+            function(events) {
+                 //console.log(events);
+                 events.forEach(function(product){
+                     let product_data = product.returnValues
+                     //console.log(product_data["_hash_start"]);
+                     let ipfs_pointer=hex2ascii(product_data["hash_start"])+hex2ascii(product_data["hash_end"])
+                         //console.log(ipfs_pointer)
+                         ipfs.files.get(ipfs_pointer, function (err, files) {files.forEach((file) => {
+                               let product_description = file.content.toString('utf8')
+                               products.push(product_description);
+                           }
+                       )});
 
-
-        const query = {
-            tag: 'SDPP'
-        }
-
-        //axios.get(`${API_ROOT}/search?tag=SDPP`)
-        axios.get(`${API_ROOT}/search`, {params: query})
-        .then((response)=>{
-            console.log(response.data);
-            this.setState({
-                items: response.data
-            });
-
-        })
-        .catch((error)=>{
-            console.log(error);
-        });
+                });
+            }
+        );
+        console.log(products);
+        this.setState(()=>({
+            items: products
+        }))
     }
 
     handleSelectItem = (index)=>{
