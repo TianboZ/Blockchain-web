@@ -1,7 +1,6 @@
 @import './RegistrationForm.css';
 @import './Main.css';
 @import '~antd/dist/antd.css';
-
 .App {
     text-align: center;
 }
@@ -17,6 +16,16 @@
     height: 60px;
     width: 100%;
     color: white;
+}
+
+.App-top-header {
+
+    background:  #DF574B;
+
+    height:      60px;
+    position:    fixed;
+    top:         0px;
+    width:       100%;
 }
 
 .App-title {

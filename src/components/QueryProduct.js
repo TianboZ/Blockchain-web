@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Dropdown, Icon, Menu} from "antd";
-import {Button} from 'antd';
+import React, { Component } from 'react';
+import { Dropdown, Icon, Menu } from "antd";
+import { Button, Radio, Select } from 'antd';
 import Item from "./Item";
 import axios from 'axios';
 import storehash from "./storehash";
@@ -8,66 +8,54 @@ import ipfs from "./ipfs";
 import web3 from "./web3";
 import hex2ascii from 'hex2ascii';
 
+const Option = Select.Option;
+
+const RadioGroup = Radio.Group;
+
+
 class QueryProduct extends Component {
 
     state = {
         searchTag: '',
         items: [],
-        selectedIndex: []
+        selectedIndex: null
     }
 
-    handleMenuClick = (e) => {
-        if (e.key === '0') {
-            this.setState({
-                searchTag: 'SDPP'
-            });
-        }
-    }
+
 
     handleOnClick = () => {
-        let products = [];
+        const products = [];
         const account = web3.eth.accounts.privateKeyToAccount('0xC89ADA337DCDD9D9D092D582104064554DDC3A835B0D164B82E304F0DFC5F0FC');
         web3.eth.accounts.wallet.add(account);
         web3.eth.defaultAccount = account.address;
         storehash.getPastEvents("PostProducts", {fromBlock: 0, toBlock: 'latest'}).then(
-            function (events) {
+            (events) => {
                 //console.log(events);
-                events.forEach(function (product) {
-                    let product_data = product.returnValues
+                events.forEach((product) => {
+                    let product_data = product.returnValues;
                     //console.log(product_data["_hash_start"]);
-                    let ipfs_pointer = hex2ascii(product_data["hash_start"]) + hex2ascii(product_data["hash_end"])
-                    //console.log(ipfs_pointer)
-                    ipfs.files.get(ipfs_pointer, function (err, files) {
-                        files.forEach((file) => {
-                                let product_description = file.content.toString('utf8')
-                                products.push(product_description);
-                            }
-                        )
-                    });
+                    let ipfs_pointer = hex2ascii(product_data["hash_start"]) + hex2ascii(product_data["hash_end"]);
+                    console.log(ipfs_pointer);
 
+                    ipfs.files.get(ipfs_pointer, (err, files)=> {
+                        if (files === undefined) {
+                            console.log('file is undefined!')
+                        } else {
+                            for (let i = 0; i < files.length; i++) {
+                                console.log("---------------Data Product---------------------");
+                                let product_description = files[i].content.toString('utf8');
+                                console.log(product_description);
+                                products.push(product_description);
+                                this.setState(()=>({
+                                    items: products
+                                }));
+                                console.log("------------------------------------------------");
+                            }
+                        }
+                    });
                 });
             }
         );
-        console.log(products);
-        this.setState(() => ({
-            items: products
-        }))
-    }
-
-    handleSelectItem = (index) => {
-        const newSelectedIndex = [...this.state.selectedIndex, index];
-        this.setState({
-            selectedIndex: newSelectedIndex
-        })
-    }
-
-    handleDeleteItem = (index) => {
-        const uniArr = [...(new Set(this.state.selectedIndex))];
-        const i = uniArr.indexOf(index);
-        uniArr.splice(i, 1);
-        this.setState({
-            selectedIndex: uniArr
-        })
     }
 
     getAllSelectedItem = () => {
@@ -91,28 +79,44 @@ class QueryProduct extends Component {
         });
     }
 
+    getItems = ()=>{
+        const itemsArray = this.state.items.map((item, index) => {
+            return (
+                <Item
+                    content={item}
+                    index={index}
+                />
+            )
+        })
+        return itemsArray;
+    }
+
+    handleRadioSelection=(e)=>{
+        this.setState({
+            selectedIndex: e.target.value
+        });
+    }
+    handleDropdown=(value)=>{
+        this.setState({
+            searchTag: value
+        });
+    }
+
     render() {
 
         console.log('render query product');
 
-        const menu = (
-            <Menu onClick={this.handleMenuClick}>
-                <Menu.Item key="0">SDPP</Menu.Item>
-            </Menu>
-        );
-
         return (
             <div>
-                <Dropdown
-                    overlay={menu}
-                    trigger={['click']}
+                <br/><br/>
+                <Select
+                    defaultValue="SDPP"
+                    style={{ width: 100 }}
+                    onChange={this.handleDropdown}
                 >
-                    <a
-                        className="ant-dropdown-link" href="#">
-                        search tag
-                        <Icon type="down"/>
-                    </a>
-                </Dropdown>
+                    <Option value="others">OTHER</Option>
+                    <Option value="SDPP">SDPP</Option>
+                </Select>
                 <br/><br/>
                 <Button
                     type="primary"
@@ -121,22 +125,18 @@ class QueryProduct extends Component {
                 >
                     Search
                 </Button>
-                <ul>
-                    {
-                        this.state.items.map((item, index) => {
-                            return (
-                                <Item
-                                    content={item}
-                                    index={index}
-                                    selectItem={this.handleSelectItem.bind(this, index)}
-                                    deleteItem={this.handleDeleteItem.bind(this, index)}
-                                />
-                            )
-                        })
-                    }
-                </ul>
+                <div>
+                    <RadioGroup
+                        onChange={this.handleRadioSelection}
+                        value={this.state.selectedIndex}
+                    >
+                        {this.getItems()}
+                    </RadioGroup>
+                </div>
+
                 <Button
                     onClick={this.handleClickBtn}
+                    style={{ width: 100 }}
                 >
                     Buy!
                 </Button>

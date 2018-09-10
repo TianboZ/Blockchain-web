@@ -37,7 +37,7 @@ class TodoList extends Component {
                     click me
                 </Button>
                 <ul>
-                    {this.getTodoItem}
+                    {this.getTodoItem()}
                 </ul>
             </div>
         );

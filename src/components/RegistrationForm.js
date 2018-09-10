@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
-import {Form, Input, Button} from 'antd';
-import { Menu, Dropdown, Icon } from 'antd';
+import {Form, Input, Button, Select} from 'antd';
+import {Menu, Dropdown, Icon} from 'antd';
 import axios from 'axios';
 import {API_ROOT} from "../constants";
 import web3 from "./web3";
 import storehash from "./storehash";
 import ipfs from "./ipfs";
 
-const menu = (
-    <Menu>
-        <Menu.Item key="SDPP">SDPP</Menu.Item>
-    </Menu>
-);
-
+const Option = Select.Option;
 const FormItem = Form.Item;
 
 class RegistrationForm extends Component {
@@ -21,21 +16,21 @@ class RegistrationForm extends Component {
         description: '',
         price: '',
         longitude: '',
-        latitude:'',
+        latitude: '',
 
-        ipfsHash:null,
-        buffer:'',
-        ethAddress:'',
-        blockNumber:'',
-        transactionHash:'',
-        gasUsed:'',
+        ipfsHash: null,
+        buffer: '',
+        ethAddress: '',
+        blockNumber: '',
+        transactionHash: '',
+        gasUsed: '',
         txReceipt: ''
     };
 
-    getHexfromIPFSHash =(ipfsHash) =>{
+    getHexfromIPFSHash = (ipfsHash) => {
         let hash = Buffer.from(ipfsHash).toString('hex');
         return {
-            hash_start:`0x${hash.substring(0,64)}`,
+            hash_start: `0x${hash.substring(0, 64)}`,
             hash_end: `0x${hash.slice(64)}`,
             protocol_type: '0x01'
         }
@@ -43,6 +38,7 @@ class RegistrationForm extends Component {
 
     handleBtnClick = (e) => {
         this.sendToIpfs();
+        console.log('------------------------------------------------------------------')
         console.log(this.state);
         //alert(this.state);
         const reqBody = {
@@ -50,28 +46,28 @@ class RegistrationForm extends Component {
             protocol_type: 0x01
         }
 
-        axios.post(`${API_ROOT}/register`, reqBody)
-            .then((response)=>{
-                console.log(response);
-                // if success, jump to home, clean state data
-                this.setState(()=>({
-                    description: '',
-                    price: '',
-                    longitude: '',
-                    latitude:''
-                }));
-                this.props.history.push('/home');
-            }).catch((error)=>{
-                console.log(error);
-            });
+        // axios.post(`${API_ROOT}/register`, reqBody)
+        //     .then((response) => {
+        //         console.log(response);
+        //         // if success, jump to home, clean state data
+        //         this.setState(() => ({
+        //             description: '',
+        //             price: '',
+        //             longitude: '',
+        //             latitude: ''
+        //         }));
+        //         this.props.history.push('/home');
+        //     }).catch((error) => {
+        //     console.log(error);
+        // });
     }
 
-    sendToIpfs = ()=>{
+    sendToIpfs = () => {
         this.convertToBuffer();
         this.onSubmit();
     }
 
-    convertToBuffer = async() => {
+    convertToBuffer = async () => {
         //file is converted to a buffer for upload to IPFS
         const obj = {
             description: this.state.description,
@@ -94,27 +90,26 @@ class RegistrationForm extends Component {
         const account = web3.eth.accounts.privateKeyToAccount('0xC89ADA337DCDD9D9D092D582104064554DDC3A835B0D164B82E304F0DFC5F0FC');
         web3.eth.accounts.wallet.add(account);
         web3.eth.defaultAccount = account.address;
-        ;
 
         console.log('Sending from Metamask account: ' + account.address);
         //obtain contract address from storehash.js
-        const ethAddress= await storehash.options.address;
+        const ethAddress = await storehash.options.address;
         this.setState({ethAddress});
         //save document to IPFS,return its hash#, and set hash# to state
         //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add
         await ipfs.add(this.state.buffer, (err, ipfsHash) => {
-            console.log(err,ipfsHash);
+            console.log(err, ipfsHash);
             //setState by setting ipfsHash to ipfsHash[0].hash
-            this.setState({ ipfsHash:ipfsHash[0].hash });
+            this.setState({ipfsHash: ipfsHash[0].hash});
             // call Ethereum contract method "sendHash" and .send IPFS hash to etheruem contract
             //return the transaction hash from the ethereum contract
             //see, this https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#methods-mymethod-send
 
             let data = this.getHexfromIPFSHash(this.state.ipfsHash);
             console.log(data);
-            storehash.methods.postProduct(data.hash_start , data.hash_end , data.protocol_type).send({
+            storehash.methods.postProduct(data.hash_start, data.hash_end, data.protocol_type).send({
                 from: account.address,
-                gas : 1000000
+                gas: 1000000
             }, (error, transactionHash) => {
                 console.log(transactionHash);
                 this.setState({transactionHash});
@@ -178,26 +173,28 @@ class RegistrationForm extends Component {
 
         return (
             <Form
-
                 className="register-form"
             >
-                <Dropdown
-                    overlay={menu}
-                    trigger={['click']}
-                    {...formItemLayout}
-                >
-                    <a
-                        className="ant-dropdown-link"
-                    >
-                        product type
-                        <Icon type="down" />
-                    </a>
-                </Dropdown>
-                <br/><br/>
                 <FormItem
                     label={(
                         <span>
-                            description&nbsp;
+                            Type&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Select
+                        defaultValue="SDPP"
+                        style={{ width: 200}}
+                    >
+                        <Option value="others">OTHER</Option>
+                        <Option value="SDPP">SDPP</Option>
+                    </Select>
+                </FormItem>
+                <FormItem
+                    label={(
+                        <span>
+                            Description&nbsp;
                         </span>
                     )}
                     {...formItemLayout}
@@ -210,7 +207,7 @@ class RegistrationForm extends Component {
                 <FormItem
                     label={(
                         <span>
-                            price&nbsp;
+                            Price&nbsp;
                         </span>
                     )}
                     {...formItemLayout}
@@ -223,7 +220,7 @@ class RegistrationForm extends Component {
                 <FormItem
                     label={(
                         <span>
-                            longitude&nbsp;
+                            Longitude&nbsp;
                         </span>
                     )}
                     {...formItemLayout}
@@ -236,7 +233,7 @@ class RegistrationForm extends Component {
                 <FormItem
                     label={(
                         <span>
-                            longitude&nbsp;
+                            Latitude&nbsp;
                         </span>
                     )}
                     {...formItemLayout}

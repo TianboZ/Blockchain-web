@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from '../assets/images/logo.svg'
-import DApp from "./DApp";
 
 class Header extends React.Component {
     render() {

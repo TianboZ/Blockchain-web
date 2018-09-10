@@ -46,3 +46,33 @@ ABI:
 
 new one:
 [{"constant":false,"inputs":[{"name":"_hash_start","type":"bytes32"},{"name":"_hash_end","type":"bytes32"},{"name":"_pytpe","type":"bytes1"}],"name":"postProduct","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_hash","type":"bytes32"},{"name":"_hashfunction","type":"uint8"},{"name":"_size","type":"uint8"}],"name":"addProduct","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"indexed_from","type":"address"},{"indexed":false,"name":"hash_start","type":"bytes32"},{"indexed":false,"name":"hash_end","type":"bytes32"},{"indexed":false,"name":"ptype","type":"bytes1"}],"name":"PostProducts","type":"event"}]
+
+
+--------
+storehash.getPastEvents("PostProducts", {fromBlock: 0, toBlock: 'latest'}).then(
+            function (events) {
+                //console.log(events);
+                events.forEach(function (product) {
+                    let product_data = product.returnValues;
+                    //console.log(product_data["_hash_start"]);
+                    let ipfs_pointer = hex2ascii(product_data["hash_start"]) + hex2ascii(product_data["hash_end"]);
+                    console.log(ipfs_pointer);
+                    if (ipfs_pointer !== '1QmY7F334YQLoCiZ2k7bhHdMLhpPbrfnZzMkYRaiJjNhksE') {
+                        ipfs.files.get(ipfs_pointer, function (err, files) {
+                            files.forEach((file) => {
+                                    console.log("---------------Data Product---------------------");
+                                    let product_description = file.content.toString('utf8');
+                                    console.log(product_description);
+                                    console.log("------------------------------------------------");
+                                }
+                            )
+                        });
+                    }
+
+
+                    // pointers.push(ipfs_pointer);
+                    // console.log('push one element');
+                    // console.log(pointers.length);
+                });
+            }
+        );

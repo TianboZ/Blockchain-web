@@ -6,7 +6,11 @@ class NavBar extends Component {
     render() {
         return (
             <div>
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="vertical-left">
+                <Menu
+                    theme="dark"
+                    defaultSelectedKeys={['1']}
+                    mode="vertical-left"
+                >
                     <Menu.Item key="1">
                         <Icon type="home" />
                         <span>Home</span>

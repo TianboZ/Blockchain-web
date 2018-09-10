@@ -3,7 +3,6 @@ import { Layout, Menu, Icon } from 'antd';
 import Header from "./Header";
 import Main from "./Main";
 import NavBar from "./NavBar";
-import DApp from "./DApp";
 
 const {Sider, Content} = Layout;
 
@@ -19,22 +18,26 @@ class App extends Component {
 
     render() {
         return (
-            <Layout style={{ minHeight: '100vh' }}>
-                <Sider
-                    collapsible
-                    collapsed={this.state.collapsed}
-                    onCollapse={this.onCollapse}
-                >
-                    <NavBar />
-                </Sider>
-                <Layout>
-                    <Header />
-                    <Content style={{ margin: '0 16px' }}>
-                        <Main />
-                    </Content>
+            <div>
+                <Layout style={{ minHeight: '100vh' }}>
+                    <Sider
+                        collapsible
+                        collapsed={this.state.collapsed}
+                        onCollapse={this.onCollapse}
+                        className='navBar'
+                    >
+                        <NavBar />
+                    </Sider>
+                    <Layout>
+                        <Header />
+                        <Content style={{ margin: '0 16px' }}>
+                            <Main />
+                        </Content>
+                    </Layout>
                 </Layout>
-            </Layout>
-        );
+            </div>
+
+        )
     }
 }
 
