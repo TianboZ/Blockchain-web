@@ -1,30 +1,29 @@
-import React, { Component } from 'react';
-import { Dropdown, Icon, Menu } from "antd";
-import { Button, Radio, Select } from 'antd';
+import React, {Component} from 'react';
+import {Button, Radio, Select} from 'antd';
 import Item from "./Item";
-import axios from 'axios';
 import storehash from "./storehash";
 import ipfs from "./ipfs";
 import web3 from "./web3";
 import hex2ascii from 'hex2ascii';
+import {Link} from "react-router-dom";
 
 const Option = Select.Option;
-
 const RadioGroup = Radio.Group;
-
 
 class QueryProduct extends Component {
 
     state = {
         searchTag: '',
-        items: [],
+        items_string: [],
+        items_object: [],
         selectedIndex: null
-    }
+    };
 
-
-
+    // from Rahul
     handleOnClick = () => {
-        const products = [];
+        const products_description = []; // array of String
+        const products_object = []; // array of Object
+
         const account = web3.eth.accounts.privateKeyToAccount('0xC89ADA337DCDD9D9D092D582104064554DDC3A835B0D164B82E304F0DFC5F0FC');
         web3.eth.accounts.wallet.add(account);
         web3.eth.defaultAccount = account.address;
@@ -37,17 +36,21 @@ class QueryProduct extends Component {
                     let ipfs_pointer = hex2ascii(product_data["hash_start"]) + hex2ascii(product_data["hash_end"]);
                     console.log(ipfs_pointer);
 
-                    ipfs.files.get(ipfs_pointer, (err, files)=> {
+                    ipfs.files.get(ipfs_pointer, (err, files) => {
                         if (files === undefined) {
                             console.log('file is undefined!')
                         } else {
                             for (let i = 0; i < files.length; i++) {
                                 console.log("---------------Data Product---------------------");
                                 let product_description = files[i].content.toString('utf8');
+                                let product_object = files[i].content;
+
                                 console.log(product_description);
-                                products.push(product_description);
-                                this.setState(()=>({
-                                    items: products
+                                products_description.push(product_description);
+                                products_object.push(product_object);
+                                this.setState(() => ({
+                                    items_string: products_description,
+                                    items_object: products_object
                                 }));
                                 console.log("------------------------------------------------");
                             }
@@ -58,29 +61,9 @@ class QueryProduct extends Component {
         );
     }
 
-    getAllSelectedItem = () => {
-        const selectedItems = [];
-        for (let i = 0; i < this.state.selectedIndex.length; i++) {
-            const index = this.state.selectedIndex[i];
-            selectedItems.push(this.state.items[index]);
-        }
-        console.log(selectedItems);
-        return selectedItems;
-    }
-
-    handleClickBtn = () => {
-        const selectedItems = this.getAllSelectedItem();
-        alert(selectedItems);
-        axios.post('/buy', {selectedItems})
-            .then((response) => {
-                console.log(response);
-            }).catch((error) => {
-            console.log(error);
-        });
-    }
-
-    getItems = ()=>{
-        const itemsArray = this.state.items.map((item, index) => {
+    getItems = () => {
+        // map all the element in items_string to a new array
+        const items = this.state.items_string.map((item, index) => {
             return (
                 <Item
                     content={item}
@@ -88,30 +71,29 @@ class QueryProduct extends Component {
                 />
             )
         })
-        return itemsArray;
+        return items;
     }
 
-    handleRadioSelection=(e)=>{
+    handleRadioSelection = (e) => {
         this.setState({
             selectedIndex: e.target.value
         });
     }
-    handleDropdown=(value)=>{
+
+    handleDropdown = (value) => {
         this.setState({
             searchTag: value
         });
     }
 
     render() {
-
         console.log('render query product');
-
         return (
             <div>
                 <br/><br/>
                 <Select
                     defaultValue="SDPP"
-                    style={{ width: 100 }}
+                    style={{width: 100}}
                     onChange={this.handleDropdown}
                 >
                     <Option value="others">OTHER</Option>
@@ -135,10 +117,11 @@ class QueryProduct extends Component {
                 </div>
 
                 <Button
-                    onClick={this.handleClickBtn}
-                    style={{ width: 100 }}
+                    style={{width: 100}}
                 >
-                    Buy!
+                    <Link to={{pathname: '/order', state: {item_object: this.state.items_object[this.state.selectedIndex]}}}>
+                        Checkout
+                    </Link>
                 </Button>
             </div>
         );

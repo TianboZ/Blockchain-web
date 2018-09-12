@@ -13,11 +13,19 @@ const FormItem = Form.Item;
 class RegistrationForm extends Component {
 
     state = {
+        // display
         description: '',
         price: '',
         longitude: '',
         latitude: '',
+        seller_credential: '',
+        ip_address: '',
+        public_address: '',
+        data_unit: '',
+        product_type: '',
+        peripheral_sensor: '',
 
+        // ipfs part
         ipfsHash: null,
         buffer: '',
         ethAddress: '',
@@ -70,16 +78,19 @@ class RegistrationForm extends Component {
     convertToBuffer = async () => {
         //file is converted to a buffer for upload to IPFS
         const obj = {
-            description: this.state.description,
-            price: this.state.price,
-            longitude: this.state.longitude,
-            latitude: this.state.latitude
+            Product_Type: this.state.product_type,
+            Peripheral_Sensor: this.state.peripheral_sensor,
+            Product_Description: this.state.description,
+            Longitude: this.state.longitude,
+            Latitude: this.state.latitude,
+            Price_per_Data_Unit_USD: this.state.price,
+            Data_Unit: this.state.data_unit,
+            IP_Address: this.state.ip_address,
+            Public_Address: this.state.public_address,
+            Seller_Credentials: this.state.seller_credential
         };
 
-        //const buffer = await Buffer.from(reader.result);
         const buffer = await Buffer.from(JSON.stringify(obj));
-        //set this buffer -using es6 syntax
-
         this.setState({buffer});
     };
 
@@ -138,6 +149,36 @@ class RegistrationForm extends Component {
                 price: e.target.value
             })
         }
+        if (input === 'seller_credential') {
+            this.setState({
+                seller_credential: e.target.value
+            })
+        }
+        if (input === 'ip_address') {
+            this.setState({
+                ip_address: e.target.value
+            })
+        }
+        if (input === 'public_address') {
+            this.setState({
+                public_address: e.target.value
+            })
+        }
+        if (input === 'data_unit') {
+            this.setState({
+                data_unit: e.target.value
+            })
+        }
+        if (input === 'product_type') {
+            this.setState({
+                product_type: e.target.value
+            })
+        }
+        if (input === 'product_sensor') {
+            this.setState({
+                product_sensor: e.target.value
+            })
+        }
     }
 
     render() {
@@ -153,6 +194,7 @@ class RegistrationForm extends Component {
                 sm: {span: 16},
             },
         };
+
         const tailFormItemLayout = {
             wrapperCol: {
                 xs: {
@@ -170,6 +212,12 @@ class RegistrationForm extends Component {
         const price = 'price';
         const longitude = 'longitude';
         const latitude = 'latitude';
+        const seller_credential = 'seller_credential'
+        const ip_address = 'ip_address';
+        const public_address = 'public_address';
+        const data_unit = 'data_unit';
+        const product_type = 'product_type';
+        const product_sensor = 'product_sensor';
 
         return (
             <Form
@@ -194,6 +242,32 @@ class RegistrationForm extends Component {
                 <FormItem
                     label={(
                         <span>
+                            Product Type&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.product_type}
+                        onChange={this.handleInputChange.bind(this, product_type)}
+                    />
+                </FormItem>
+                <FormItem
+                    label={(
+                        <span>
+                            Product Sensor&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.product_sensor}
+                        onChange={this.handleInputChange.bind(this, product_sensor)}
+                    />
+                </FormItem>
+                <FormItem
+                    label={(
+                        <span>
                             Description&nbsp;
                         </span>
                     )}
@@ -202,19 +276,6 @@ class RegistrationForm extends Component {
                     <Input
                         value={this.state.description}
                         onChange={this.handleInputChange.bind(this, description)}
-                    />
-                </FormItem>
-                <FormItem
-                    label={(
-                        <span>
-                            Price&nbsp;
-                        </span>
-                    )}
-                    {...formItemLayout}
-                >
-                    <Input
-                        value={this.state.price}
-                        onChange={this.handleInputChange.bind(this, price)}
                     />
                 </FormItem>
                 <FormItem
@@ -241,6 +302,73 @@ class RegistrationForm extends Component {
                     <Input
                         value={this.state.latitude}
                         onChange={this.handleInputChange.bind(this, latitude)}
+                    />
+                </FormItem>
+                <FormItem
+                    label={(
+                        <span>
+                            Price per Data Unit in USD&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.price}
+                        onChange={this.handleInputChange.bind(this, price)}
+                    />
+                </FormItem>
+                <FormItem
+                    label={(
+                        <span>
+                            Data Unit&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.data_unit}
+                        onChange={this.handleInputChange.bind(this, data_unit)}
+                    />
+                </FormItem>
+                <FormItem
+                    label={(
+                        <span>
+                            IP Address&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.ip_address}
+                        onChange={this.handleInputChange.bind(this, ip_address)}
+                    />
+                </FormItem>
+
+                <FormItem
+                    label={(
+                        <span>
+                            Public Address&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.public_address}
+                        onChange={this.handleInputChange.bind(this, public_address)}
+                    />
+                </FormItem>
+
+                <FormItem
+                    label={(
+                        <span>
+                            Seller Credentials&nbsp;
+                        </span>
+                    )}
+                    {...formItemLayout}
+                >
+                    <Input
+                        value={this.state.seller_credential}
+                        onChange={this.handleInputChange.bind(this, seller_credential)}
                     />
                 </FormItem>
                 <FormItem

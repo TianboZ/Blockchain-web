@@ -19,9 +19,7 @@ class NavBar extends Component {
                     <Menu.Item key="2">
                         <Icon type="login" />
                         <span>Register Product</span>
-                        <Link to ='/register' >
-
-                        </Link>
+                        <Link to ='/register' />
                     </Menu.Item>
                     <Menu.Item key="3">
                         <Icon type="search" />
