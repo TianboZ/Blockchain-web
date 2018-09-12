@@ -200,7 +200,7 @@ class RegistrationForm extends Component {
         const public_address = 'public_address';
         const data_unit = 'data_unit';
         const product_type = 'product_type';
-        const product_sensor = 'product_sensor';
+        const peripheral_sensor = 'peripheral_sensor';
 
         return (
             <Form
@@ -244,8 +244,8 @@ class RegistrationForm extends Component {
                     {...formItemLayout}
                 >
                     <Input
-                        value={this.state.product_sensor}
-                        onChange={this.handleInputChange.bind(this, product_sensor)}
+                        value={this.state.peripheral_sensor}
+                        onChange={this.handleInputChange.bind(this, peripheral_sensor)}
                     />
                 </FormItem>
                 <FormItem
