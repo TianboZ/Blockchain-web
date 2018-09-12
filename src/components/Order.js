@@ -163,8 +163,42 @@ class Order extends Component {
 
         return (
             <div>
+
                 <Form>
                     <br/><br/>
+                    <FormItem
+                    >
+                        <div>
+                            Product_Type: {this.state.orderDetail.Product_Type},
+                        </div>
+                        <div>
+                            Peripheral_Sensor: {this.state.orderDetail.Peripheral_Sensor},
+                        </div>
+                        <div>
+                            Product_Description: {this.state.orderDetail.Product_Description},
+                        </div>
+                        <div>
+                            Longitude: {this.state.orderDetail.Longitude},
+                        </div>
+                        <div>
+                            Latitude: {this.state.orderDetail.Latitude},
+                        </div>
+                        <div>
+                            Price_per_Data_Unit_USD: {this.state.orderDetail.Price_per_Data_Unit_USD},
+                        </div>
+                        <div>
+                            Data_Unit: {this.state.orderDetail.Data_Unit},
+                        </div>
+                        <div>
+                            IP_Address: {this.state.orderDetail.IP_Address},
+                        </div>
+                        <div>
+                            Public_Address: {this.state.orderDetail.Public_Address},
+                        </div>
+                        <div>
+                            Seller_Credentials: {this.state.orderDetail.Seller_Credentials}
+                        </div>
+                    </FormItem>
                     <FormItem
                         label={(<span>Seed&nbsp;</span>)}
                         {...formItemLayout}

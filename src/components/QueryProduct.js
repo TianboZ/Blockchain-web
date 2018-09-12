@@ -115,7 +115,6 @@ class QueryProduct extends Component {
                         {this.getItems()}
                     </RadioGroup>
                 </div>
-
                 <Button
                     style={{width: 100}}
                 >

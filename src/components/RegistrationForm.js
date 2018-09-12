@@ -48,26 +48,9 @@ class RegistrationForm extends Component {
         this.sendToIpfs();
         console.log('------------------------------------------------------------------')
         console.log(this.state);
-        //alert(this.state);
-        const reqBody = {
-            ipfs_hash: this.state.ipfsHash,
-            protocol_type: 0x01
+        if (this.state.ipfsHash !== '') {
+            alert('Register Success!')
         }
-
-        // axios.post(`${API_ROOT}/register`, reqBody)
-        //     .then((response) => {
-        //         console.log(response);
-        //         // if success, jump to home, clean state data
-        //         this.setState(() => ({
-        //             description: '',
-        //             price: '',
-        //             longitude: '',
-        //             latitude: ''
-        //         }));
-        //         this.props.history.push('/home');
-        //     }).catch((error) => {
-        //     console.log(error);
-        // });
     }
 
     sendToIpfs = () => {
