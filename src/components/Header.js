@@ -15,7 +15,7 @@ class Header extends React.Component {
                     <h1
                         className="App-title"
                     >
-                        Project
+                        CCI Decentralized Data Marketplace
                     </h1>
                 </header>
             </div>

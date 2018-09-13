@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Form, Input, InputNumber} from "antd";
+import {Button, Form, Input, InputNumber, Table, Tag } from "antd";
 import IOTA from "iota.lib.js";
 import {saveAs} from "file-saver";
 
